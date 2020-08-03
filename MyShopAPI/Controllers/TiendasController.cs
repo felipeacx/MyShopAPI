@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyShopAPI.Data;
 using MyShopAPI.Models;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace MyShopAPI.Controllers
 {
@@ -27,12 +30,25 @@ namespace MyShopAPI.Controllers
         {
             return context.Tiendas.ToList();
         }
-        //GET Tiendas/id
+        //GET Tiendas/id -> Productos
         [HttpGet("{id}")]
-        public Tienda Get(int id)
+        public ProductosdelaTienda Get(int id)
         {
+            var ProductosDisponibles = new ProductosdelaTienda();
             var Tienda = context.Tiendas.FirstOrDefault(p => p.ID == id);
-            return Tienda;
+            var Productos = context.Productos.ToList();
+            ProductosDisponibles.tienda = Tienda;
+            for(int i = 0; i < Productos.Count; i++)
+            {
+                if (Tienda.ID.Equals(Productos[i].Tienda))
+                {
+                    byte[] imageArray = System.IO.File.ReadAllBytes(Productos[i].Imagen);
+                    string base64ImageRepresentation = Convert.ToBase64String(imageArray);
+                    Productos[i].Imagen = base64ImageRepresentation;
+                    ProductosDisponibles.AgregarProducto(Productos[i]);
+                }
+            }
+            return ProductosDisponibles;
         }
         //POST Tiendas
         [HttpPost]
