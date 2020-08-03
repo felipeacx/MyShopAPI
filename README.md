@@ -1,3 +1,13 @@
+HERRAMIENTAS USADAS
+
+.NET CORE 3.1
+Entity Framework
+First Code Entity
+Azure App Services
+Sql Server
+Postman
+Muchas ganas de seguir aprendiendo
+
 INSTALACIÓN
 
 Para la instalación debemos realizar la copia del proyecto a Visual Studio 2019.
