@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -28,27 +29,41 @@ namespace MyShopAPI.Controllers
         [HttpGet]
         public IEnumerable<Tienda> Get()
         {
+            CreateLog("GET");
+            context.SaveChanges();
             return context.Tiendas.ToList();
         }
         //GET Tiendas/id -> Productos
         [HttpGet("{id}")]
         public ProductosdelaTienda Get(int id)
         {
-            var ProductosDisponibles = new ProductosdelaTienda();
             var Tienda = context.Tiendas.FirstOrDefault(p => p.ID == id);
-            var Productos = context.Productos.ToList();
-            ProductosDisponibles.tienda = Tienda;
-            for(int i = 0; i < Productos.Count; i++)
+            if(Tienda != null)
             {
-                if (Tienda.ID.Equals(Productos[i].Tienda))
+                CreateLog("GET/id");
+                context.SaveChanges();
+                var ProductosDisponibles = new ProductosdelaTienda();
+                var Productos = context.Productos.ToList();
+                ProductosDisponibles.tienda = Tienda;
+                var products = new List<Producto>();
+                for (int i = 0; i < Productos.Count; i++)
                 {
-                    byte[] imageArray = System.IO.File.ReadAllBytes(Productos[i].Imagen);
-                    string base64ImageRepresentation = Convert.ToBase64String(imageArray);
-                    Productos[i].Imagen = base64ImageRepresentation;
-                    ProductosDisponibles.AgregarProducto(Productos[i]);
+                    if (Tienda.ID == Productos[i].IDTienda)
+                    {
+                        byte[] imageArray = System.IO.File.ReadAllBytes(Productos[i].Imagen+".jpg");
+                        string base64ImageRepresentation = Convert.ToBase64String(imageArray);
+                        Productos[i].Imagen = base64ImageRepresentation;
+                        products.Add(Productos[i]);
+                    }
                 }
+                ProductosDisponibles.productos = products;
+                return ProductosDisponibles;
             }
-            return ProductosDisponibles;
+            else
+            {
+                return null;
+            }
+            
         }
         //POST Tiendas
         [HttpPost]
@@ -56,6 +71,8 @@ namespace MyShopAPI.Controllers
         {
             try
             {
+                CreateLog("POST");
+                context.SaveChanges();
                 context.Tiendas.Add(NuevaTienda);
                 context.SaveChanges();
                 return Ok("Tienda agregada satisfactoriamente.");
@@ -71,6 +88,8 @@ namespace MyShopAPI.Controllers
         {
             try
             {
+                CreateLog("PUT/id");
+                context.SaveChanges();
                 context.Entry(Tienda).State = EntityState.Modified;
                 context.SaveChanges();
                 return Ok("Tienda modificada con éxito.");
@@ -86,6 +105,8 @@ namespace MyShopAPI.Controllers
         {
             try
             {
+                CreateLog("Delete/id");
+                context.SaveChanges();
                 var Tienda = context.Tiendas.FirstOrDefault(p => p.ID == id);
                 if(Tienda != null)
                 {
@@ -101,6 +122,23 @@ namespace MyShopAPI.Controllers
             catch
             {
                 return BadRequest("ERROR!");
+            }
+        }
+
+        public void CreateLog(string TipoPeticion)
+        {
+            try
+            {
+                context.Database.OpenConnection();
+                _ = context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT Logs ON;");
+                var Log = new Table();
+                Log.Id = context.Logs.Count()+1;
+                Log.Log = "Petición " + TipoPeticion + " a las: " + DateTime.Now.ToString();
+                context.Logs.Add(Log);
+            }
+            catch
+            {
+                throw new Exception();
             }
         }
     }

@@ -52,6 +52,21 @@ namespace MyShopAPI.Migrations
                     b.ToTable("Productos");
                 });
 
+            modelBuilder.Entity("MyShopAPI.Models.Table", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Log")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Logs");
+                });
+
             modelBuilder.Entity("MyShopAPI.Models.Tienda", b =>
                 {
                     b.Property<int>("ID")

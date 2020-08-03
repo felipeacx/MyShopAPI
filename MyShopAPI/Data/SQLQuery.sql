@@ -45,3 +45,5 @@ values ('Portatil HP',1000014,'Portatil HP 14 pulgadas core i 3 4RAM 1TB',232000
 insert into Productos (Nombre,SKU,Descripcion,Valor,IDTienda,Imagen) 
 values ('Apple Macbook Pro',1000015,'Macbook Pro 14 pulgadas core i 5 8RAM 1TB',3400000,4,'imagenes\\macbook');
 SET IDENTITY_INSERT Productos OFF;
+
+SET IDENTITY_INSERT Logs ON;

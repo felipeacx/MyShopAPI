@@ -13,8 +13,9 @@ namespace MyShopAPI.Data
             : base(options)
         {
         }
-
         public DbSet<Tienda> Tiendas { get; set; }
         public DbSet<Producto> Productos { get; set; }
+        public DbSet<Table> Logs { get; set; }
+
     }
 }

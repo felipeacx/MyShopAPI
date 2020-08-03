@@ -20,7 +20,7 @@ namespace MyShopAPI.Models
         public int Valor { get; set; }
         [Required]
         [ForeignKey("IDTienda")]
-        public virtual Tienda Tienda { get; set; }
+        public int IDTienda { get; set; }
         [Required]
         public string Imagen { get; set; }
     }

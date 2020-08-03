@@ -10,22 +10,22 @@ using MyShopAPI.Models;
 
 namespace MyShopAPI.Controllers
 {
-    public class TiendasDbController : Controller
+    public class ControladorDBTiendas : Controller
     {
         private readonly MyShopDbContext _context;
 
-        public TiendasDbController(MyShopDbContext context)
+        public ControladorDBTiendas(MyShopDbContext context)
         {
             _context = context;
         }
 
-        // GET: TiendasDb
+        // GET: ControladorDBTiendas
         public async Task<IActionResult> Index()
         {
             return View(await _context.Tiendas.ToListAsync());
         }
 
-        // GET: TiendasDb/Details/5
+        // GET: ControladorDBTiendas/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -43,13 +43,13 @@ namespace MyShopAPI.Controllers
             return View(tienda);
         }
 
-        // GET: TiendasDb/Create
+        // GET: ControladorDBTiendas/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: TiendasDb/Create
+        // POST: ControladorDBTiendas/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -65,7 +65,7 @@ namespace MyShopAPI.Controllers
             return View(tienda);
         }
 
-        // GET: TiendasDb/Edit/5
+        // GET: ControladorDBTiendas/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -81,7 +81,7 @@ namespace MyShopAPI.Controllers
             return View(tienda);
         }
 
-        // POST: TiendasDb/Edit/5
+        // POST: ControladorDBTiendas/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -116,7 +116,7 @@ namespace MyShopAPI.Controllers
             return View(tienda);
         }
 
-        // GET: TiendasDb/Delete/5
+        // GET: ControladorDBTiendas/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -134,7 +134,7 @@ namespace MyShopAPI.Controllers
             return View(tienda);
         }
 
-        // POST: TiendasDb/Delete/5
+        // POST: ControladorDBTiendas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

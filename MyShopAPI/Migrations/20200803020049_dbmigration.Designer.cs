@@ -10,8 +10,8 @@ using MyShopAPI.Data;
 namespace MyShopAPI.Migrations
 {
     [DbContext(typeof(MyShopDbContext))]
-    [Migration("20200802202101_shopmigration")]
-    partial class shopmigration
+    [Migration("20200803020049_dbmigration")]
+    partial class dbmigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -52,6 +52,21 @@ namespace MyShopAPI.Migrations
                     b.HasIndex("IDTienda");
 
                     b.ToTable("Productos");
+                });
+
+            modelBuilder.Entity("MyShopAPI.Models.Table", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Log")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Logs");
                 });
 
             modelBuilder.Entity("MyShopAPI.Models.Tienda", b =>
