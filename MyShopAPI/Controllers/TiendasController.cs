@@ -19,7 +19,6 @@ namespace MyShopAPI.Controllers
     public class TiendasController : ControllerBase
     {
         private readonly MyShopDbContext context;
-
         public TiendasController(MyShopDbContext context)
         {
             this.context = context;
@@ -32,6 +31,14 @@ namespace MyShopAPI.Controllers
             CreateLog("GET");
             context.SaveChanges();
             return context.Tiendas.ToList();
+        }
+        //GET Logs
+        [HttpGet("logs")]
+        public IEnumerable<Table> GetLogs()
+        {
+            CreateLog("GET/Logs");
+            context.SaveChanges();
+            return context.Logs.ToList();
         }
         //GET Tiendas/id -> Productos
         [HttpGet("{id}")]
@@ -140,6 +147,14 @@ namespace MyShopAPI.Controllers
             {
                 throw new Exception();
             }
+        }
+
+        public async Task<List<Table>> GetLogsAsync()
+        {
+            var result = await Task.Run(() => {
+                return context.Logs.ToList();
+            });
+            return result;
         }
     }
 }
