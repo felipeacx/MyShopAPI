@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MyShopAPI.Data;
 using MyShopAPI.Models;
 
@@ -34,11 +35,57 @@ namespace MyShopAPI.Controllers
             return Tienda;
         }
         //POST Tiendas
-        [HttpPost("add")]
-        public IActionResult AgregarTienda(Tienda NuevaTienda)
+        [HttpPost]
+        public IActionResult Post([FromBody]Tienda NuevaTienda)
         {
-            var result = context.Tiendas.Add(NuevaTienda);
-            return (IActionResult)result;
+            try
+            {
+                context.Tiendas.Add(NuevaTienda);
+                context.SaveChanges();
+                return Ok("Tienda agregada satisfactoriamente.");
+            }
+            catch
+            {
+                return BadRequest("ERROR!");
+            }
+        }
+        //PUT Tiendas
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, [FromBody]Tienda Tienda)
+        {
+            try
+            {
+                context.Entry(Tienda).State = EntityState.Modified;
+                context.SaveChanges();
+                return Ok("Tienda modificada con éxito.");
+            }
+            catch
+            {
+                return BadRequest("ERROR!");
+            }
+        }
+        //DELETE Tiendas
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                var Tienda = context.Tiendas.FirstOrDefault(p => p.ID == id);
+                if(Tienda != null)
+                {
+                    context.Tiendas.Remove(Tienda);
+                    context.SaveChanges();
+                    return Ok("Tienda eliminada con éxito.");
+                }
+                else
+                {
+                    return BadRequest("ERROR!");
+                }
+            }
+            catch
+            {
+                return BadRequest("ERROR!");
+            }
         }
     }
 }
